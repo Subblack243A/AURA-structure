@@ -36,20 +36,24 @@ services:
   db:
     image: pgvector/pgvector:pg16
     container_name: aura_db
+    build:
+      context: ../AURA-Back-End/AuraBackend/postgres
     environment:
       POSTGRES_DB: auraDb
       POSTGRES_USER: auraUser
       POSTGRES_PASSWORD: naruto77
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - aurabackend_pgdata:/var/lib/postgresql/data
+      - ../AURA-Back-End/AuraBackend/postgres/postgresql.conf:/var/lib/postgres/data/postgresql.conf
+    command: postgres -c config_file=/var/lib/postgres/data/postgresql.conf
     ports:
       - "5432:5432"
     networks:
       - aura_network
 
 volumes:
-  pgdata:
-
+  aurabackend_pgdata:
+    external: true
 
 networks:
   aura_network:
